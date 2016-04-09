@@ -1,6 +1,10 @@
-Mar 29, 2016 10:38:58 AM Classification$ main
-INFO: Record Lineage time starts at 2016-03-29 10:38:58.135
-Mar 29, 2016 10:39:41 AM Classification$ main
-INFO: Lineage takes 43334042 microseconds
-Mar 29, 2016 10:39:41 AM Classification$ main
-INFO: Lineage ends at 2016-03-29 10:39:41.471
+Apr 06, 2016 11:35:06 AM Classification$ main
+INFO: Record Lineage time starts at 2016-04-06 11:35:06.606
+Apr 06, 2016 11:37:48 AM Classification$ main
+INFO: Lineage takes 162201914 microseconds
+Apr 06, 2016 11:37:48 AM Classification$ main
+INFO: Lineage ends at 2016-04-06 11:37:48.813
+Apr 06, 2016 2:39:06 PM Classification$ main
+INFO: Record DeltaDebugging (unadjusted) time starts at 2016-04-06 14:39:06.23
+Apr 06, 2016 2:39:06 PM DD_NonEx dd_helper
+INFO: Running DD_NonEx SCALA

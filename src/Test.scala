@@ -13,6 +13,31 @@ import scala.io.Source
 
 import java.io.File
 import java.io._
+import java.io.{PrintWriter, File}
+import java.lang.Exception
+import java.util.logging._
+import org.apache.spark.{rdd, SparkConf, SparkContext}
+import org.apache.spark.api.java.JavaPairRDD
+import org.apache.spark.api.java.JavaRDD
+import org.apache.spark.api.java.JavaSparkContext
+import org.apache.spark.api.java.function.{FlatMapFunction, Function2, PairFunction}
+import org.apache.spark.rdd.{PairRDDFunctions, RDD}
+import scala.Tuple2
+import java.util.{Scanner, Calendar, StringTokenizer}
+
+import scala.collection.mutable.MutableList
+import scala.io.Source
+import scala.reflect.ClassTag
+
+//remove if not needed
+import scala.collection.JavaConversions._
+
+import scala.util.control.Breaks._
+import org.apache.spark.lineage.LineageContext
+import org.apache.spark.lineage.LineageContext._
+
+import org.apache.spark.SparkContext._
+import scala.sys.process._
 
 
 
@@ -102,11 +127,27 @@ class Test extends userTest[(String, Int)] with Serializable {
     }
     outputFile.delete
     */
-    inputRDD.collect().foreach(println)
-    val finalRdd = DeltaWorkflowManager.generateNewWorkFlow(inputRDD)
-    val out = finalRdd.collect()
+
+    //this is for the version with goNext
+    val resultRDD = inputRDD
+      .groupByKey()
+      //this final stage throws an exception
+        .map(s => {
+          var value = new String("")
+          val itr = s._2.toIterator
+          while (itr.hasNext) {
+            value += itr.next().asInstanceOf[(String, Long)]._1
+            value += ","
+          }
+          value = value.substring(0, value.length - 1)
+          if (value.contains("13")) value += "*"
+          (s._1, value)
+        })
+
+    val out = resultRDD.collect()
+
     for (o <- out) {
-      println(o)
+//      println(o)
       if (o.asInstanceOf[(String, String)]._2.substring(o.asInstanceOf[(String, String)]._2.length - 1).equals("*")) returnValue = true
     }
     return returnValue

@@ -1,5 +1,5 @@
 /**
- * Created by Michael on 2/1/16.
+ * Created by Michael on 4/5/16.
  */
 
 import java.io.{PrintWriter, File}
@@ -28,43 +28,43 @@ import org.apache.spark.lineage.LineageContext._
 import org.apache.spark.SparkContext._
 import scala.sys.process._
 
-object Classification {
+object Classification_v2 {
   private val strModelFile = "/Users/Michael/IdeaProjects/Classification/initial_centroids.data"
   private val maxClusters = 16
   private val centroids = new Array[Cluster](maxClusters)
   private val centroids_ref = new Array[Cluster](maxClusters)
 
-//  def mapFunc(str: String): (Int, String) = {
-//    val token = new StringTokenizer(str)
-//    val key = token.nextToken().toInt
-//    var value = token.nextToken()
-//    (key, value)
-//  }
+  //  def mapFunc(str: String): (Int, String) = {
+  //    val token = new StringTokenizer(str)
+  //    val key = token.nextToken().toInt
+  //    var value = token.nextToken()
+  //    (key, value)
+  //  }
 
 
-//    def testGroundTruthFunc[K:ClassTag,V:ClassTag](outputRDD: RDD[(Int, String)],path:String,f: String => (K , V) ): List[Int] ={
-//      val rdd = outputRDD.sparkContext.textFile(path)
-//      val transformed:PairRDDFunctions[K,V] = rdd.map(f)
-//      val output = outputRDD.collect()
-//      var joinedRDD = transformed.join(outputRDD.asInstanceOf[RDD[(K,V)]])
-//      val filter = joinedRDD.filter(r =>r._2._1 != r._2._2)
-//      val failures = filter.collect()
-//      var index = 0
-//      var list = List[Int]()
-//      for(o <- output){
-//        if(o.isInstanceOf[Tuple2[K,V]]){
-//          val tmp = o.asInstanceOf[Tuple2[K,V]]
-//          for(f <- failures) {
-//            if (f._1 == tmp._1) {
-//              list = index :: list
-//            }
-//          }
-//        }
-//        index = index + 1
-//      }
-//      return list
-//
-//  }
+  //    def testGroundTruthFunc[K:ClassTag,V:ClassTag](outputRDD: RDD[(Int, String)],path:String,f: String => (K , V) ): List[Int] ={
+  //      val rdd = outputRDD.sparkContext.textFile(path)
+  //      val transformed:PairRDDFunctions[K,V] = rdd.map(f)
+  //      val output = outputRDD.collect()
+  //      var joinedRDD = transformed.join(outputRDD.asInstanceOf[RDD[(K,V)]])
+  //      val filter = joinedRDD.filter(r =>r._2._1 != r._2._2)
+  //      val failures = filter.collect()
+  //      var index = 0
+  //      var list = List[Int]()
+  //      for(o <- output){
+  //        if(o.isInstanceOf[Tuple2[K,V]]){
+  //          val tmp = o.asInstanceOf[Tuple2[K,V]]
+  //          for(f <- failures) {
+  //            if (f._1 == tmp._1) {
+  //              list = index :: list
+  //            }
+  //          }
+  //        }
+  //        index = index + 1
+  //      }
+  //      return list
+  //
+  //  }
 
   def initializeCentroids(): Int = {
     var numClust = 0
@@ -109,37 +109,37 @@ object Classification {
     numClust
   }
 
-//  def main(args:Array[String]): Unit = {
-//    val pw = new PrintWriter(new File("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult"))
-//
-//    val sparkConf = new SparkConf().setMaster("local[8]")
-//    sparkConf.setAppName("Classification_LineageDD-" )
-//      .set("spark.executor.memory", "2g")
-//
-//    val ctx = new SparkContext(sparkConf)
-//
-//    val lines = ctx.textFile("/Users/Michael/IdeaProjects/Classification/file1_dbug", 1)
-//    val totalClusters = initializeCentroids()
-//    val constr = new sparkOperations
-//    val output = constr.sparkWorks(lines, maxClusters, totalClusters, centroids_ref).collect
-//    val itr = output.iterator
-//    while (itr.hasNext) {
-//      val tupVal = itr.next()
-////      pw.append(tupVal._1 + " " + tupVal._2 + "\n")
-//      pw.append(tupVal._1 + ":")
-//      val itr2 = tupVal._2.toIterator
-//      while (itr2.hasNext) {
-//        val itrVal = itr2.next()
-//        pw.append(itrVal + "\n")
-//      }
-//
-//    }
-//    pw.close()
-//    ctx.stop()
-//  }
+  //  def main(args:Array[String]): Unit = {
+  //    val pw = new PrintWriter(new File("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult"))
+  //
+  //    val sparkConf = new SparkConf().setMaster("local[8]")
+  //    sparkConf.setAppName("Classification_LineageDD-" )
+  //      .set("spark.executor.memory", "2g")
+  //
+  //    val ctx = new SparkContext(sparkConf)
+  //
+  //    val lines = ctx.textFile("/Users/Michael/IdeaProjects/Classification/file1_dbug", 1)
+  //    val totalClusters = initializeCentroids()
+  //    val constr = new sparkOperations
+  //    val output = constr.sparkWorks(lines, maxClusters, totalClusters, centroids_ref).collect
+  //    val itr = output.iterator
+  //    while (itr.hasNext) {
+  //      val tupVal = itr.next()
+  ////      pw.append(tupVal._1 + " " + tupVal._2 + "\n")
+  //      pw.append(tupVal._1 + ":")
+  //      val itr2 = tupVal._2.toIterator
+  //      while (itr2.hasNext) {
+  //        val itrVal = itr2.next()
+  //        pw.append(itrVal + "\n")
+  //      }
+  //
+  //    }
+  //    pw.close()
+  //    ctx.stop()
+  //  }
 
 
-private val exhaustive = 0
+  private val exhaustive = 0
 
   def main(args: Array[String]): Unit = {
     try {
@@ -180,13 +180,13 @@ private val exhaustive = 0
       //
 
       //generate truth file (for correctness test only)
-/*
-      //Prepare for Hadoop MapReduce
-      val clw = new commandLineOperations()
-      clw.commandLineWorks()
-      //Run Hadoop to have a groundTruth
-      Seq("hadoop", "jar", "/Users/Michael/Documents/UCLA Senior/F15/Research-Fall2015/benchmark/examples/Classification.jar", "org.apache.hadoop.examples.Classification", "-m", "3", "-r", "1", "/Users/Michael/IdeaProjects/Classification/file1s", "output").!!
-*/
+      /*
+            //Prepare for Hadoop MapReduce
+            val clw = new commandLineOperations()
+            clw.commandLineWorks()
+            //Run Hadoop to have a groundTruth
+            Seq("hadoop", "jar", "/Users/Michael/Documents/UCLA Senior/F15/Research-Fall2015/benchmark/examples/Classification.jar", "org.apache.hadoop.examples.Classification", "-m", "3", "-r", "1", "/Users/Michael/IdeaProjects/Classification/file1s", "output").!!
+      */
       //generate centroid
       val totalClusters = initializeCentroids()
 
@@ -304,37 +304,37 @@ private val exhaustive = 0
 
 
       //print out the result for debugging purpose
-//      for (o <- output) {
-//        println(o._1._1 + ": " + o._1._2 + " - " + o._2)
-//      }
+      //      for (o <- output) {
+      //        println(o._1._1 + ": " + o._1._2 + " - " + o._2)
+      //      }
 
-//      val pw = new PrintWriter(new File("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult"))
+      //      val pw = new PrintWriter(new File("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult"))
 
       //find the index of the data that cause exception
       var list = List[Long]()
       for (o <- output) {
         val checkPoint = o._1._2.substring(o._1._2.length - 1)
         if (checkPoint.equals("*")){
-//          println(o._1._1 + ": " + o._1._2 + " - " + o._2)
+          //          println(o._1._1 + ": " + o._1._2 + " - " + o._2)
           list = o._2 :: list
         }
       }
 
       //print out the resulting list for debugging purposes
-//      for (l <- list) {
-//        println("*************************")
-//        println(l)
-//        println("*************************")
-//      }
+      //      for (l <- list) {
+      //        println("*************************")
+      //        println(l)
+      //        println("*************************")
+      //      }
 
 
       var linRdd = classification_result.getLineage()
       linRdd.collect
 
       linRdd = linRdd.filter( l => {
-          //println("***" + l + "***") //debug
-          list.contains(l)
-        }
+        //println("***" + l + "***") //debug
+        list.contains(l)
+      }
       )
 
       linRdd = linRdd.goBackAll()
@@ -346,30 +346,26 @@ private val exhaustive = 0
       logger.log(Level.INFO, "Lineage ends at " + lineageEndTimestamp)
 
 
-      linRdd = linRdd.goNext()
-
       val showMeRdd = linRdd.show()
 
       val mappedRDD = showMeRdd.map(s => {
-        val str = s.toString
-        val index = str.lastIndexOf(",")
-        val lineageID = str.substring(index + 1, str.length - 1)
-        val content = str.substring(2, index - 1)
-        val index2 = content.lastIndexOf(",")
-        ((content.substring(0, index2), content.substring(index2 + 1).toInt), lineageID.toLong)
+        val index = s.indexOf(":")
+        val key = s.substring(0, index)
+        val value = s.substring(index + 1)
+        (key, value)
       })
 
       mappedRDD.cache()
-//      println("MappedRDD has " + mappedRDD.count() + " records")
+      //      println("MappedRDD has " + mappedRDD.count() + " records")
 
 
-//      pw.close()
+      //      pw.close()
 
-//      val lineageResult = ctx.textFile("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult", 1)
+      //      val lineageResult = ctx.textFile("/Users/Michael/IdeaProjects/Classification_LineageDD/lineageResult", 1)
       //val lineageResult = ctx.textFile("/Users/Michael/IdeaProjects/Classification/file1s", 1)
 
-//      val num = lineageResult.count()
-//      logger.log(Level.INFO, "Lineage caught " + num + " records to run delta-debugging")
+      //      val num = lineageResult.count()
+      //      logger.log(Level.INFO, "Lineage caught " + num + " records to run delta-debugging")
 
 
       //Remove output before delta-debugging
@@ -388,31 +384,19 @@ private val exhaustive = 0
         */
       //lineageResult.cache()
 
-//      if (exhaustive == 1) {
-//        val delta_debug: DD[String] = new DD[String]
-//        delta_debug.ddgen(lineageResult, new Test,
-//          new Split, maxClusters, totalClusters, centroids_ref, lm, fh)
-//      } else {
-        val delta_debug = new DD_NonEx[(String, Int), Long]
-        val returnedRDD = delta_debug.ddgen(mappedRDD, new Test, new Split, maxClusters, totalClusters, centroids_ref, lm, fh)
-//      }
+      //      if (exhaustive == 1) {
+      //        val delta_debug: DD[String] = new DD[String]
+      //        delta_debug.ddgen(lineageResult, new Test,
+      //          new Split, maxClusters, totalClusters, centroids_ref, lm, fh)
+      //      } else {
+      val delta_debug = new DD_NonEx_v2[(String, String)]
+      val returnedRDD = delta_debug.ddgen(mappedRDD, new Test_v2, new Split_v2, maxClusters, totalClusters, centroids_ref, lm, fh)
+      //      }
 
       val ss = returnedRDD.collect
 
-      //For version of the test with goNext
-      linRdd = classification_result.getLineage()
-      linRdd.collect
+      ss.foreach(println)
 
-      linRdd = linRdd.goBack().goBack().filter(l => {
-        if(l.asInstanceOf[((Int, Int),(Int, Int))]._1._2 == ss(0)._2.toInt){
-          //          println("*** => " + l)
-          true
-        }else false
-      })
-
-      linRdd = linRdd.goBackAll()
-      linRdd.collect()
-      linRdd.show()
 
       val DeltaDebuggingEndTime = System.nanoTime()
       val DeltaDebuggingEndTimestamp = new java.sql.Timestamp(Calendar.getInstance.getTime.getTime)
@@ -427,6 +411,7 @@ private val exhaustive = 0
       //    for (tuple <- output) {
       //      println(tuple._1 + ": " + tuple._2)
       //    }
+
       println("Job's DONE!")
       ctx.stop()
     }
